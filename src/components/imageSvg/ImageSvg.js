@@ -16,7 +16,10 @@ export default class ImageSvg extends React.Component {
           path="svg.svg"
           evalScripts="always"
           onInjected={svg => {
-            var svgst = d3.select(svg).select("g[id]");
+            var svgDoom = d3
+              .select(svg)
+              .selectAll("#maproot")
+              .selectAll("g[id]:not([id=Leaves])");
 
             d3.selection.prototype.mouseoverShade = function(d, i) {
               this.attr("stroke", "yellow");
@@ -34,16 +37,6 @@ export default class ImageSvg extends React.Component {
                 }
               });
             };
-
-            console.log(svgst);
-            svgst.each(function() {
-              return console.log(this);
-            });
-
-            var svgDoom = d3
-              .select(svg)
-              .selectAll("#maproot")
-              .selectAll("g[id]:not([id=Leaves])");
 
             var tooltip = d3
               .select("body")
@@ -64,10 +57,24 @@ export default class ImageSvg extends React.Component {
                   .attr("stroke", function(d, j) {
                     return j != i ? "" : "yellow";
                   })
+                  .attr("stroke-linejoin", "bevel")
+                  .attr("stroke-width", "2")
+                  .attr("stroke-miterlimit", ".5")
+                  .attr("stroke-opacity", ".5");
+
+                //d3.select(this).mouseoverShade(i);
+              })
+              .on("mouseout", function(d, i) {
+                svgDoom
+                  .transition()
+                  .duration(300)
+                  .attr("stroke", function(d, j) {
+                    return j != i ? "" : "yellow";
+                  })
                   .attr("opacity", function(d, j) {
-                    return j != i ? 0.8 : 1;
+                    return 1;
                   });
-                d3.select(this).mouseoverShade(i);
+                //d3.select(this).mouseoverShade(i);
               })
               .on("click", function(d) {
                 d3.select(this).moveToBack();
@@ -79,7 +86,7 @@ export default class ImageSvg extends React.Component {
           }}
           renumerateIRIElements={false}
           svgClassName="svg-class-name"
-          svgStyle={{ width: 1000 }}
+          svgStyle={{ width: 600 }}
           className="wrapper-class-name"
           onClick={() => {
             console.log("wrapper onClick");
