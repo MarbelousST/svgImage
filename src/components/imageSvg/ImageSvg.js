@@ -43,7 +43,17 @@ export default class ImageSvg extends React.Component {
             var svgDoom = d3
               .select(svg)
               .selectAll("#maproot")
-              .selectAll("g[id]");
+              .selectAll("g[id]:not([id=Leaves])");
+
+            var tooltip = d3
+              .select("body")
+              .append("div")
+              .attr("class", "remove")
+              .style("position", "absolute")
+              .style("z-index", "20")
+              .style("visibility", "hidden")
+              .style("top", "30px")
+              .style("left", "55px");
 
             svgDoom
               .attr("opacity", "1")
@@ -52,7 +62,7 @@ export default class ImageSvg extends React.Component {
                   .transition()
                   .duration(300)
                   .attr("stroke", function(d, j) {
-                    return j != i ? 2 : 1;
+                    return j != i ? "" : "yellow";
                   })
                   .attr("opacity", function(d, j) {
                     return j != i ? 0.8 : 1;
