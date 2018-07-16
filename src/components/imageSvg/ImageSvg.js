@@ -77,16 +77,21 @@ export default class ImageSvg extends React.Component {
                 //d3.select(this).mouseoverShade(i);
               })
               .on("click", function(d) {
-                d3.select(this).moveToBack();
+                d3
+                  .select(this)
+                  .classed("hover", true)
+                  .attr("stroke", "blue")
+                  .attr("stroke-width", "0.5px"),
+                  tooltip
+                    .html("<p>" + "hola" + "<br>" + this.id + "</p>")
+                    .style("visibility", "visible");
               });
-            //.on("mouseover", function() {
-            //d3.select(this).style("fill", "green");
-            //});
+
             console.log("onInjected", svgDoom);
           }}
           renumerateIRIElements={false}
           svgClassName="svg-class-name"
-          svgStyle={{ width: 600 }}
+          svgStyle={{ width: 700 }}
           className="wrapper-class-name"
           onClick={() => {
             console.log("wrapper onClick");
